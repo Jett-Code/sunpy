@@ -98,7 +98,7 @@ def expand_list(inp):
 
 
 def expand_list_generator(inp):
-    type_union = (str | bytes | np.ndarray | dict)
+    type_union = (str, bytes, np.ndarray, dict)
     for item in inp:
         if not isinstance(item, type_union) and isinstance(item, Iterable):
             yield from expand_list_generator(item)

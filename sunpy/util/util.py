@@ -11,6 +11,8 @@ from shutil import get_terminal_size
 from itertools import chain, count
 from collections.abc import Iterable
 
+import numpy as np
+
 __all__ = ['unique', 'replacement_filename', 'expand_list',
            'expand_list_generator', 'dict_keys_same', 'hash_file', 'get_width',
            'get_keywords', 'get_set_methods', 'fix_duplicate_notes']
@@ -92,12 +94,13 @@ def expand_list(inp):
     ----------
     * https://stackoverflow.com/questions/2185822/expanding-elements-in-a-list/2185971#2185971
     """
-    return [item for item in expand_list_generator(inp)]
+    return list(expand_list_generator(inp))
 
 
 def expand_list_generator(inp):
+    type_union = (str | bytes | np.ndarray | dict)
     for item in inp:
-        if not isinstance(item, (str, bytes)) and isinstance(item, Iterable):
+        if not isinstance(item, type_union) and isinstance(item, Iterable):
             yield from expand_list_generator(item)
         else:
             yield item
